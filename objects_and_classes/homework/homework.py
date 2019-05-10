@@ -57,17 +57,17 @@ import uuid
 
 class Cesar:
 
-    def __init__(self, name, register_id, garages= []):
+    def __init__(self, name):
         self.name = name
-        self.register_id = register_id
-        self.garages = garages
+        self.register_id = uuid.uuid4().hex
+        self.garages = [Garage(owner= self.register_id) for _ in range(random.randrange(1,3))]
 
 
     def hit_hat(self):
         total_price_cars = 0
-        for x in self.garages:
-            tom_garages_lst += len(x)
-        return tom_garages_lst
+        for x.cars in self.garages:
+            for y in range(len(x.cars)):
+                print(y)
 
 
     def garages_count(self):
@@ -77,7 +77,7 @@ class Cesar:
     def сars_count(self):
         count_car = 0
         for x in self.garages:
-            count_cat += len(x)
+            count_car += len(x.cars)
         return count_car
 
 
@@ -107,8 +107,8 @@ class Car:
 
 class Garage:
 
-    def __init__(self, town, owner):
-        self.town = town
+    def __init__(self, owner):
+        self.town = random.choice(TOWNS)
         self.cars = [Car() for _ in range(random.randrange(5))]
         self.places = len(self.cars) + 5
         self.owner = owner
@@ -125,51 +125,10 @@ if __name__ == '__main__':
 
     "Init First and second Cesar"
 
-    Tom = Cesar(
-        name='Tom',
-        register_id= uuid.uuid4().hex,
-        garages= [random.choice(TOWNS) for x in range(random.randrange(1,3))]
-                )
+    Tom = Cesar(name='Tom')
 
-    Jack = Cesar(
-        name='Jack',
-        register_id= uuid.uuid4().hex,
-        garages= [random.choice(TOWNS) for x in range(random.randrange(1,3))]
-        )
+    Jack = Cesar(name='Jack')
 
-    "Init Garages and Cars for each Cesar"
-    "---Tom's garages"
-
-    tom_garages_lst = []
-    for i in range(len(Tom.garages)):
-        toms_garage = Garage(
-            town= Tom.garages[i],
-            owner= Tom.register_id
-       )
-        tom_garages_lst.append(toms_garage)
-
-
-    "---Jack's garages"
-
-    jack_garages_lst = []
-    for i in range(len(Jack.garages)):
-        jacks_garage = Garage(
-            town= Jack.garages[i],
-            owner= Jack.register_id
-       )
-        jack_garages_lst.append(jacks_garage)
-
-
-    print(Tom.display_all())
-    #print(Tom.garages_count())
-    print('Kol garges is ' + str(Tom.garages_count()))
-    print('Kol cars is ' + str(tom_garages_lst[0].cars[0].price))
-    """
-    for garage in :
-        for car in garage:
-        
-    
-    
-    """
-
-
+    print(Tom.garages_count())
+    print(Tom.сars_count())
+    print(Tom.hit_hat())
