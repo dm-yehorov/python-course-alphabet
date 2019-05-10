@@ -64,7 +64,10 @@ class Cesar:
 
 
     def hit_hat(self):
-        pass
+        total_price_cars = 0
+        for x in self.garages:
+            tom_garages_lst += len(x)
+        return tom_garages_lst
 
 
     def garages_count(self):
@@ -72,8 +75,10 @@ class Cesar:
 
 
     def сars_count(self):
-        #for i in self.garages:
-        pass
+        count_car = 0
+        for x in self.garages:
+            count_cat += len(x)
+        return count_car
 
 
     def add_car(self):
@@ -156,10 +161,13 @@ if __name__ == '__main__':
 
 
     print(Tom.display_all())
-    print(Tom.garages_count())
-    print(Tom.g())
+    #print(Tom.garages_count())
+    print('Kol garges is ' + str(Tom.garages_count()))
+    print('Kol cars is ' + str(tom_garages_lst[0].cars[0].price))
     """
-    f
+    for garage in :
+        for car in garage:
+        
     
     
     """
