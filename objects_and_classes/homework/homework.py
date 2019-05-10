@@ -62,7 +62,6 @@ class Cesar:
         self.register_id = uuid.uuid4().hex
         self.garages = [Garage(owner= self.register_id) for _ in range(random.randrange(1,3))]
 
-
     def hit_hat(self):
         total_price_cars = 0
         for x in self.garages:
@@ -70,10 +69,8 @@ class Cesar:
                 total_price_cars += x.cars[y].price
         return total_price_cars
 
-
     def garages_count(self):
         return len(self.garages)
-
 
     def сars_count(self):
         count_car = 0
@@ -81,14 +78,31 @@ class Cesar:
             count_car += len(x.cars)
         return count_car
 
-
-    def add_car(self):
+    def add_car(self, garag = 'Nothing'):
+       self.garag = garag
        free_places_lst = [i.free_places() for i in self.garages ]
-       if max(free_places_lst) > 0:
-            self.garages[free_places_lst.index(max(free_places_lst))].cars.append(Car())
+       if garag == 'Nothing':
+            if max(free_places_lst) > 0:
+                self.garages[free_places_lst.index(max(free_places_lst))].cars.append(Car())
+            else:
+                return ('Not free places in any garages')
        else:
-            return ('Not free places in any garages')
+           self,garag.add()
 
+    def __lt__(self, other):
+        return self.hit_hat() < other.hit_hat()
+
+    def __gt__(self, other):
+        return self.hit_hat() > other.hit_hat()
+
+    def __le__(self, other):
+        return self.hit_hat() <= other.hit_hat()
+
+    def __ge__(self, other):
+        return self.hit_hat() >= other.hit_hat()
+
+    def __eq__(self, other):
+        return self.hit_hat() == other.hit_hat()
 
 class Car:
 
@@ -99,23 +113,34 @@ class Car:
         self.number = uuid.uuid4().hex
         self.milleage = random.randrange(1000)
 
-
     def chg_num(self):
         self.number = uuid.uuid4().hex
-
 
     def __str__(self):
         return f"Price: {self.price}, Type: {self.type}, Producer: {self.producer}, Number: {self.number}, Milleage: {self.milleage}"
 
+    def __lt__(self, other):
+        return self.price < other.price
+
+    def __eq__(self, other):
+        return self.price == other.price
+
+    def __le__(self, other):
+        return self.price <= other.price
+
+    def __ge__(self, other):
+        return self.price >= other.price
+
+    def __gt__(self, other):
+        return self.price > other.price
 
 class Garage:
 
     def __init__(self, owner):
         self.town = random.choice(TOWNS)
-        self.cars = [Car() for _ in range(random.randrange(5))]
+        self.cars = [Car() for _ in range(random.randrange(1,5))]
         self.places = len(self.cars) + random.randrange(5)
         self.owner = owner
-
 
     def add(self):
         if self.places - len(self.cars) > 0:
@@ -123,11 +148,9 @@ class Garage:
         else:
             print('I dont have free places')
 
-
     def remove(self):
         if len(self.cars) > 0:
             self.cars.pop(random.randrange(len(self.cars)))
-
 
     def hit_hat(self):
         total_price_cars = 0
@@ -135,10 +158,8 @@ class Garage:
             total_price_cars += self.cars[i].price
         return total_price_cars
 
-
     def free_places(self):
         return self.places - len(self.cars)
-
 
 if __name__ == '__main__':
 
@@ -160,6 +181,7 @@ if __name__ == '__main__':
 
     print('Sum money all cars for Tom ' + str(Tom.hit_hat()))
     print('Sum money all cars for Jack ' + str(Jack.hit_hat()))
+    print('Tom.hit_hat() == Jack.hit_hat() is ', Tom.hit_hat() == Jack.hit_hat() )
 
     "Hit_hat fo each Garase for Cesar"
     "Tom's garages"
@@ -181,6 +203,8 @@ if __name__ == '__main__':
         for j in i.cars:
             print(j)
 
+    print('Tom.garages[0].cars[0] > Jack.garages[0].cars[0] is ', Tom.garages[0].cars[0] > Jack.garages[0].cars[0])
+
     print("Add Cars to Tom.Garages")
     Tom.add_car()
     for i in Tom.garages:
@@ -192,6 +216,14 @@ if __name__ == '__main__':
     for i in Jack.garages:
         for j in i.cars:
             print(j)
+
+    print("Change number for random car in random for Tom")
+    print(Tom.garages[0].cars[0])
+    Tom.garages[0].cars[0].chg_num()
+
+    print("Change number for random car in random for Jack")
+    print(Jack.garages[0].cars[0])
+    Jack.garages[0].cars[0].chg_num()
 
     print("Remove Cars to Tom.Garages")
     for i in Tom.garages:
@@ -211,6 +243,8 @@ if __name__ == '__main__':
         for j in i.cars:
             print(j)
 
-    print("Change number for random car in random for Tom")
-    print(Tom.garages[0].cars[0])
-    Tom.garages[0].cars[0].chg_num()
+    print('Cesar Add Cars in each garages')
+    Tom.add_car(garag= Tom.garages[0])
+    for i in Tom.garages:
+        for j in i.cars:
+            print(j)
