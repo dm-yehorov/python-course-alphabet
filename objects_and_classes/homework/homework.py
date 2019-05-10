@@ -65,9 +65,10 @@ class Cesar:
 
     def hit_hat(self):
         total_price_cars = 0
-        for x.cars in self.garages:
+        for x in self.garages:
             for y in range(len(x.cars)):
-                print(y)
+                total_price_cars += x.cars[y].price
+        return total_price_cars
 
 
     def garages_count(self):
