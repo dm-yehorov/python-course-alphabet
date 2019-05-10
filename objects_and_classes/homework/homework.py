@@ -83,14 +83,12 @@ class Cesar:
 
 
     def add_car(self):
-        pass
+       free_places_lst = [i.free_places() for i in self.garages ]
+       if max(free_places_lst) > 0:
+            self.garages[free_places_lst.index(max(free_places_lst))].cars.append(Car())
+       else:
+            return ('Not free places in any garages')
 
-
-    def display_all (self):
-        print(self.name)
-        print(self.register_id)
-        print(self.garages)
-        print("#####################")
 
 class Car:
 
@@ -102,6 +100,10 @@ class Car:
         self.milleage = random.randrange(1000)
 
 
+    def chg_num(self):
+        self.number = uuid.uuid4().hex
+
+
     def __str__(self):
         return f"Price: {self.price}, Type: {self.type}, Producer: {self.producer}, Number: {self.number}, Milleage: {self.milleage}"
 
@@ -111,25 +113,104 @@ class Garage:
     def __init__(self, owner):
         self.town = random.choice(TOWNS)
         self.cars = [Car() for _ in range(random.randrange(5))]
-        self.places = len(self.cars) + 5
+        self.places = len(self.cars) + random.randrange(5)
         self.owner = owner
 
 
-    def hit_hat(self):
-        pass
+    def add(self):
+        if self.places - len(self.cars) > 0:
+            self.cars.append(Car())
+        else:
+            print('I dont have free places')
 
-    def __str__(self):
-        return f"Cars in garages: {len(self.cars)}, Free places is: {self.places - len(self.cars)}, Owner is: {self.owner} "
+
+    def remove(self):
+        if len(self.cars) > 0:
+            self.cars.pop(random.randrange(len(self.cars)))
+
+
+    def hit_hat(self):
+        total_price_cars = 0
+        for i in range(len(self.cars)):
+            total_price_cars += self.cars[i].price
+        return total_price_cars
+
+
+    def free_places(self):
+        return self.places - len(self.cars)
 
 
 if __name__ == '__main__':
 
-    "Init First and second Cesar"
+    """
+    Init First and second Cesar. For each Cesar generate Garages and Cars
 
+    """
     Tom = Cesar(name='Tom')
-
     Jack = Cesar(name='Jack')
 
-    print(Tom.garages_count())
-    print(Tom.сars_count())
-    print(Tom.hit_hat())
+    " Lets show number of garages and cars "
+
+    print('Count Garages for Tom ' + str(Tom.garages_count()))
+    print('Count Garages for Jack ' + str(Jack.garages_count()))
+    print('Count Cars for Tom ' + str(Tom.сars_count()))
+    print('Count Cars for Jack ' + str(Jack.сars_count()))
+
+    "Hit_hat fo each Cesar"
+
+    print('Sum money all cars for Tom ' + str(Tom.hit_hat()))
+    print('Sum money all cars for Jack ' + str(Jack.hit_hat()))
+
+    "Hit_hat fo each Garase for Cesar"
+    "Tom's garages"
+    for i in range(Tom.garages_count()):
+        print('Sum money all cars in each Garages for Tom ' + str(Tom.garages[i].hit_hat()))
+
+    "Jack's garages"
+    for i in range(Jack.garages_count()):
+        print('Sum money all cars in each Garages for Jack ' + str(Jack.garages[i].hit_hat()))
+
+    "Logs car in each Garages for Tom"
+    print("For Toms")
+    for i in Tom.garages:
+        for j in i.cars:
+            print(j)
+    "Logs car in each Garages for Jack"
+    print("For Jack")
+    for i in Jack.garages:
+        for j in i.cars:
+            print(j)
+
+    print("Add Cars to Tom.Garages")
+    Tom.add_car()
+    for i in Tom.garages:
+        for j in i.cars:
+            print(j)
+
+    print("Add Cars to Jack.Garages")
+    Jack.add_car()
+    for i in Jack.garages:
+        for j in i.cars:
+            print(j)
+
+    print("Remove Cars to Tom.Garages")
+    for i in Tom.garages:
+        if len(i.cars) > 0:
+            i.cars.pop(random.randrange(len(i.cars)))
+            break
+    for i in Tom.garages:
+        for j in i.cars:
+            print(j)
+
+    print("Remove Cars to Jack.Garages")
+    for i in Jack.garages:
+        if len(i.cars) > 0:
+            i.cars.pop(random.randrange(len(i.cars)))
+            break
+    for i in Jack.garages:
+        for j in i.cars:
+            print(j)
+
+    print("Change number for random car in random for Tom")
+    print(Tom.garages[0].cars[0])
+    Tom.garages[0].cars[0].chg_num()
