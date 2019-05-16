@@ -31,13 +31,12 @@ if __name__ == "__main__":
     restored_data = eval(json_formatted_str)
 
     print(type(restored_data))
-    print_separator()
+
 
     # Lets dump json data to file
     with open("data.json", 'w') as file:
         json.dump(DATA, file)
 
-    print_separator()
     # # Lets save json data with params
     with open("formatted_data.json", 'w') as file:
         json.dump(DATA, file, indent=4)
@@ -65,7 +64,7 @@ if __name__ == "__main__":
         print(e)
     #
     try:
-        data_as_string = json.dumps(data_2, cls=JsonEncoder)
+         data_as_string = json.dumps(data_2, cls=JsonEncoder)
     except TypeError as e:
         print(e)
     else:

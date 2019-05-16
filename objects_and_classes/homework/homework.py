@@ -3,54 +3,46 @@ from typing import List
 
 import random
 import uuid
-
+import random
+import string
+import uuid
+import json
+import pickle
+import codecs
 
 """
 Вам небхідно написати 3 класи. Колекціонери Гаражі та Автомобілі.
 Звязкок наступний один колекціонер може мати багато гаражів.
 В одному гаражі може знаходитися багато автомобілів.
-
 Автомобіль має наступні характеристики:
     price - значення типу float. Всі ціни за дефолтом в одній валюті.
     type - одне з перечисленних значеннь з CARS_TYPES в docs.
     producer - одне з перечисленних значеннь в CARS_PRODUCER.
     number - значення типу UUID. Присвоюється автоматично при створенні автомобілю.
     mileage - значення типу float. Пробіг автомобіля в кілометрах.
-
-
     Автомобілі можна перівнювати між собою за ціною.
     При виводі(logs, print) автомобілю повинні зазначатися всі його атрибути.
-
     Автомобіль має метод заміни номеру.
     номер повинен відповідати UUID
-
 Гараж має наступні характеристики:
-
     town - одне з перечислениз значеннь в TOWNS
     cars - список з усіх автомобілів які знаходяться в гаражі
     places - значення типу int. Максимально допустима кількість автомобілів в гаражі
     owner - значення типу UUID. За дефолтом None.
-
-
     Повинен мати реалізованими наступні методи
-
     add(car) -> Добавляє машину в гараж, якщо є вільні місця
     remove(cat) -> Забирає машину з гаражу.
     hit_hat() -> Вертає сумарну вартість всіх машин в гаражі
-
-
 Колекціонер має наступні характеристики
     name - значення типу str. Його ім'я
     garages - список з усіх гаражів які належать цьому Колекціонеру. Кількість гаражів за замовчуванням - 0
     register_id - UUID; Унікальна айдішка Колекціонера.
-
     Повинні бути реалізовані наступні методи:
     hit_hat() - повертає ціну всіх його автомобілів.
     garages_count() - вертає кількість гаріжів.
     сars_count() - вертає кількість машиню
     add_car() - додає машину у вибраний гараж. Якщо гараж не вказаний, то додає в гараж, де найбільше вільних місць.
     Якщо вільних місць немає повинне вивести повідомлення про це.
-
     Колекціонерів можна порівнювати за ціною всіх їх автомобілів.
 """
 
@@ -78,16 +70,17 @@ class Cesar:
             count_car += len(x.cars)
         return count_car
 
-    def add_car(self, garag = 'Nothing'):
+    def add_car(self, garag = None):
        self.garag = garag
        free_places_lst = [i.free_places() for i in self.garages ]
-       if garag == 'Nothing':
+       if garag == None:
             if max(free_places_lst) > 0:
                 self.garages[free_places_lst.index(max(free_places_lst))].cars.append(Car())
             else:
-                return ('Not free places in any garages')
+                print('Not free places in any garages')
        else:
            self,garag.add()
+
 
     def __lt__(self, other):
         return self.hit_hat() < other.hit_hat()
@@ -136,7 +129,7 @@ class Car:
 
 class Garage:
 
-    def __init__(self, owner):
+    def __init__(self, owner = None):
         self.town = random.choice(TOWNS)
         self.cars = [Car() for _ in range(random.randrange(1,5))]
         self.places = len(self.cars) + random.randrange(5)
@@ -165,7 +158,6 @@ if __name__ == '__main__':
 
     """
     Init First and second Cesar. For each Cesar generate Garages and Cars
-
     """
     Tom = Cesar(name='Tom')
     Jack = Cesar(name='Jack')
@@ -206,7 +198,6 @@ if __name__ == '__main__':
     print('Tom.garages[0].cars[0] > Jack.garages[0].cars[0] is ', Tom.garages[0].cars[0] > Jack.garages[0].cars[0])
 
     print("Add Cars to Tom.Garages")
-    Tom.add_car()
     for i in Tom.garages:
         for j in i.cars:
             print(j)
