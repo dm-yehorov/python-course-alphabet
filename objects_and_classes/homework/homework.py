@@ -1,14 +1,10 @@
-from constants import *
+from constants import CARS_TYPES, CARS_PRODUCER, TOWNS
 from typing import List
 
-import random
-import uuid
-import random
 import string
+import random
 import uuid
-import json
-import pickle
-import codecs
+
 
 """
 Вам небхідно написати 3 класи. Колекціонери Гаражі та Автомобілі.
@@ -49,10 +45,10 @@ import codecs
 
 class Cesar:
 
-    def __init__(self, name):
+    def __init__(self, name, garages=None):
         self.name = name
         self.register_id = uuid.uuid4().hex
-        self.garages = [Garage(owner= self.register_id) for _ in range(random.randrange(1,3))]
+        self.garages = garages if garages is not None else [Garage(owner=self.register_id) for _ in range(random.randrange(1, 3))]
 
     def hit_hat(self):
         total_price_cars = 0
@@ -70,16 +66,16 @@ class Cesar:
             count_car += len(x.cars)
         return count_car
 
-    def add_car(self, garag = None):
-       self.garag = garag
-       free_places_lst = [i.free_places() for i in self.garages ]
-       if garag == None:
+    def add_car(self, garag=None):
+       self.garag=garag
+       free_places_lst=[i.free_places() for i in self.garages]
+       if garag is None:
             if max(free_places_lst) > 0:
                 self.garages[free_places_lst.index(max(free_places_lst))].cars.append(Car())
             else:
                 print('Not free places in any garages')
        else:
-           self,garag.add()
+           self.garag.add()
 
 
     def __lt__(self, other):
@@ -99,17 +95,17 @@ class Cesar:
 
 class Car:
 
-    def __init__(self):
-        self.price = random.randrange(800,2000)
-        self.type = random.choice(CARS_TYPES)
-        self.producer = random.choice(CARS_PRODUCER)
-        self.number = uuid.uuid4().hex
-        self.milleage = random.randrange(1000)
+    def __init__(self, price = None, type = None, producer = None, number = None, milleage = None):
+        self.price = price if price is not None else random.randrange(800,2000)
+        self.type = type if type is not None else random.choice(CARS_TYPES)
+        self.producer = producer if producer is not None else random.choice(CARS_PRODUCER)
+        self.number = number if number is not None else uuid.uuid4().hex
+        self.milleage = milleage if milleage is not None else random.randrange(1000)
 
     def chg_num(self):
         self.number = uuid.uuid4().hex
 
-    def __str__(self):
+    def __repr__(self):
         return f"Price: {self.price}, Type: {self.type}, Producer: {self.producer}, Number: {self.number}, Milleage: {self.milleage}"
 
     def __lt__(self, other):
@@ -129,10 +125,10 @@ class Car:
 
 class Garage:
 
-    def __init__(self, owner = None):
-        self.town = random.choice(TOWNS)
-        self.cars = [Car() for _ in range(random.randrange(1,5))]
-        self.places = len(self.cars) + random.randrange(5)
+    def __init__(self, owner=None, cars=None, places=None, town=None):
+        self.town = town if town is not None else random.choice(TOWNS)
+        self.cars = cars if cars is not None else [Car() for _ in range(random.randrange(1,5))]
+        self.places = places if places is not None else len(self.cars) + random.randrange(5)
         self.owner = owner
 
     def add(self):
