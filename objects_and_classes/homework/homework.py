@@ -1,7 +1,5 @@
 from constants import CARS_TYPES, CARS_PRODUCER, TOWNS
-from typing import List
 
-import string
 import random
 import uuid
 
@@ -48,7 +46,7 @@ class Cesar:
     def __init__(self, name, garages=None):
         self.name = name
         self.register_id = uuid.uuid4().hex
-        self.garages = garages if garages is not None else [Garage(owner=self.register_id) for _ in range(random.randrange(1, 3))]
+        self.garages = garages or Garage.generator(self.register_id)
 
     def hit_hat(self):
         total_price_cars = 0
@@ -96,17 +94,21 @@ class Cesar:
 class Car:
 
     def __init__(self, price = None, type = None, producer = None, number = None, milleage = None):
-        self.price = price if price is not None else random.randrange(800,2000)
-        self.type = type if type is not None else random.choice(CARS_TYPES)
-        self.producer = producer if producer is not None else random.choice(CARS_PRODUCER)
-        self.number = number if number is not None else uuid.uuid4().hex
-        self.milleage = milleage if milleage is not None else random.randrange(1000)
+        self.price = price or random.randrange(800,2000)
+        self.type = type or random.choice(CARS_TYPES)
+        self.producer = producer or random.choice(CARS_PRODUCER)
+        self.number = number or uuid.uuid4().hex
+        self.milleage = milleage or random.randrange(1000)
 
     def chg_num(self):
         self.number = uuid.uuid4().hex
 
     def __repr__(self):
-        return f"Price: {self.price}, Type: {self.type}, Producer: {self.producer}, Number: {self.number}, Milleage: {self.milleage}"
+        return f"Price: {self.price}, " \
+            f"Type: {self.type}, " \
+            f"Producer: {self.producer}, " \
+            f"Number: {self.number}, " \
+            f"Milleage: {self.milleage}"
 
     def __lt__(self, other):
         return self.price < other.price
@@ -123,12 +125,16 @@ class Car:
     def __gt__(self, other):
         return self.price > other.price
 
+    @staticmethod
+    def generator():
+        return [Car() for _ in range(random.randrange(1,5))]
+
 class Garage:
 
     def __init__(self, owner=None, cars=None, places=None, town=None):
-        self.town = town if town is not None else random.choice(TOWNS)
-        self.cars = cars if cars is not None else [Car() for _ in range(random.randrange(1,5))]
-        self.places = places if places is not None else len(self.cars) + random.randrange(5)
+        self.town = town or random.choice(TOWNS)
+        self.cars = cars or Car.generator()
+        self.places = places or len(self.cars) + random.randrange(5)
         self.owner = owner
 
     def add(self):
@@ -150,6 +156,10 @@ class Garage:
     def free_places(self):
         return self.places - len(self.cars)
 
+    @staticmethod
+    def generator(owner):
+        return [Garage(owner) for _ in range(random.randrange(1, 3))]
+
 if __name__ == '__main__':
 
     """
@@ -160,25 +170,24 @@ if __name__ == '__main__':
 
     " Lets show number of garages and cars "
 
-    print('Count Garages for Tom ' + str(Tom.garages_count()))
-    print('Count Garages for Jack ' + str(Jack.garages_count()))
-    print('Count Cars for Tom ' + str(Tom.сars_count()))
-    print('Count Cars for Jack ' + str(Jack.сars_count()))
+    print(f'Count Garages for Tom: {Tom.garages_count()}')
+    print(f'Count Garages for Jack: {Jack.garages_count()}')
+    print(f'Count Cars for Tom: {Tom.сars_count()}')
+    print(f'Count Cars for Jack: {Jack.сars_count()}')
 
     "Hit_hat fo each Cesar"
-
-    print('Sum money all cars for Tom ' + str(Tom.hit_hat()))
-    print('Sum money all cars for Jack ' + str(Jack.hit_hat()))
-    print('Tom.hit_hat() == Jack.hit_hat() is ', Tom.hit_hat() == Jack.hit_hat() )
+    print(f'Sum money all cars for Tom: {Tom.hit_hat()}')
+    print(f'Sum money all cars for Jack: {Jack.hit_hat()}')
+    print(f'Tom.hit_hat() == Jack.hit_hat() is: {Tom.hit_hat() == Jack.hit_hat()}')
 
     "Hit_hat fo each Garase for Cesar"
     "Tom's garages"
     for i in range(Tom.garages_count()):
-        print('Sum money all cars in each Garages for Tom ' + str(Tom.garages[i].hit_hat()))
+        print(f'Sum money all cars in each Garages for Tom: {Tom.garages[i].hit_hat()}')
 
     "Jack's garages"
     for i in range(Jack.garages_count()):
-        print('Sum money all cars in each Garages for Jack ' + str(Jack.garages[i].hit_hat()))
+        print(f'Sum money all cars in each Garages for Jack: {Jack.garages[i].hit_hat()}')
 
     "Logs car in each Garages for Tom"
     print("For Toms")
@@ -235,3 +244,4 @@ if __name__ == '__main__':
     for i in Tom.garages:
         for j in i.cars:
             print(j)
+
