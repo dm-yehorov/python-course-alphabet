@@ -10,7 +10,7 @@ import uuid
 В одному гаражі може знаходитися багато автомобілів.
 Автомобіль має наступні характеристики:
     price - значення типу float. Всі ціни за дефолтом в одній валюті.
-    type - одне з перечисленних значеннь з CARS_TYPES в docs.
+    type_car - одне з перечисленних значеннь з CARS_TYPES в docs.
     producer - одне з перечисленних значеннь в CARS_PRODUCER.
     number - значення типу UUID. Присвоюється автоматично при створенні автомобілю.
     mileage - значення типу float. Пробіг автомобіля в кілометрах.
@@ -93,9 +93,9 @@ class Cesar:
 
 class Car:
 
-    def __init__(self, price = None, type = None, producer = None, number = None, milleage = None):
+    def __init__(self, price = None, type_car = None, producer = None, number = None, milleage = None):
         self.price = price or random.randrange(800,2000)
-        self.type = type or random.choice(CARS_TYPES)
+        self.type_car = type_car or random.choice(CARS_TYPES)
         self.producer = producer or random.choice(CARS_PRODUCER)
         self.number = number or uuid.uuid4().hex
         self.milleage = milleage or random.randrange(1000)
@@ -105,7 +105,7 @@ class Car:
 
     def __repr__(self):
         return f"Price: {self.price}, " \
-            f"Type: {self.type}, " \
+            f"Type: {self.type_car}, " \
             f"Producer: {self.producer}, " \
             f"Number: {self.number}, " \
             f"Milleage: {self.milleage}"
@@ -244,4 +244,3 @@ if __name__ == '__main__':
     for i in Tom.garages:
         for j in i.cars:
             print(j)
-
