@@ -1,7 +1,7 @@
-from constants import CARS_TYPES, CARS_PRODUCER, TOWNS
-
 import random
 import uuid
+
+from constants import CARS_TYPES, CARS_PRODUCER, TOWNS
 
 
 """
