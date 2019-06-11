@@ -73,21 +73,21 @@ class Cat:
     def run(self, hours):
         distance = self.average_speed()* hours
         if distance > 200:
-            self._reduce_saturation_level(50)
+            return self._reduce_saturation_level(50)
         if distance > 100:
-            self._reduce_saturation_level(25)
+            return self._reduce_saturation_level(25)
         if distance > 50:
-            self._reduce_saturation_level(15)
+            return self._reduce_saturation_level(15)
         if distance > 25:
-            self._reduce_saturation_level(5)
+            return self._reduce_saturation_level(5)
         if distance <= 25:
-            self._reduce_saturation_level(2)
-        return f"Your cat ran {distance} kilometers"
+            return self._reduce_saturation_level(2)
 
     def get_saturation_level(self):
         if self.saturation_level == 0:
-            return f'Your cat is died'
-        return f'saturation_level is {self.saturation_level}'
+            return f'Your cat is died :('
+        #return f'saturation_level is {self.saturation_level}'
+        return self.saturation_level
 
     def get_average_speed(self):
         return self.average_speed()
@@ -350,7 +350,7 @@ class House:
         return self.__door.update_wood_price(new_wood_price)
 
     def update_metal_price(self, new_metal_price):
-        return self.__door.update_metal_price(new_wood_price)
+        return self.__door.update_metal_price(new_metal_price)
 
     def get_roof_square(self):
         return self.__roof.roof_square()
@@ -389,7 +389,9 @@ class House:
 
 
 if __name__ == '__main__':
-    pass
+    a = Cheetah(1)
+    a.run(1)
+    print(a.get_saturation_level())
 
 
 

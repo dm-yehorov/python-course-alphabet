@@ -1,6 +1,6 @@
 import pytest
 
-from oop.homework import Cat, Cheetah, House
+from homework import Cat, Cheetah, House
 
 
 @pytest.mark.parametrize("age, food, result", [
@@ -168,3 +168,4 @@ class TestHouse:
         expected_res = 115
 
         assert actual_res == expected_res
+
